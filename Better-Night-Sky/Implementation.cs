@@ -22,8 +22,7 @@ namespace BetterNightSky
             assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
             if (assetBundle == null)
             {
-                Debug.LogError("Could not load asset bundle from path '" + assetBundlePath + "'.");
-                return;
+                throw new FileNotFoundException("Could not load asset bundle from path '" + assetBundlePath + "'.");
             }
 
             uConsole.RegisterCommand("toggle-night-sky", new uConsole.DebugCommand(ToggleNightSky));
@@ -32,6 +31,11 @@ namespace BetterNightSky
 
         public static void Install()
         {
+            if (assetBundle == null)
+            {
+                return;
+            }
+
             UniStormWeatherSystem uniStorm = GameManager.GetUniStorm();
 
             originalStarSphere = uniStorm.m_StarSphere;
@@ -51,11 +55,21 @@ namespace BetterNightSky
 
         public static void UpdateMoonPhase()
         {
+            if (updateMoon == null)
+            {
+                return;
+            }
+
             updateMoon.UpdatePhase();
         }
 
         public static void ForcePhase(int phase)
         {
+            if (updateMoon == null)
+            {
+                return;
+            }
+
             updateMoon.SetForcedPhase(phase);
         }
 
