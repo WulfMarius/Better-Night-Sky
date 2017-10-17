@@ -9,15 +9,30 @@ namespace BetterNightSky
     {
         private static AssetBundle assetBundle;
 
+        private static GameObject moon;
         private static GameObject originalStarSphere;
         private static GameObject starSphere;
-        private static GameObject moon;
         private static UpdateMoon updateMoon;
+
+        public static void OnLoad()
+        {
+            Debug.Log("[Better-Night-Sky]: Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+        }
+
+        public static void ForcePhase(int phase)
+        {
+            if (updateMoon == null)
+            {
+                return;
+            }
+
+            updateMoon.SetForcedPhase(phase);
+        }
 
         public static void Initialize()
         {
             string modDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string assetBundlePath = Path.Combine(modDirectory, "better-night-sky");
+            string assetBundlePath = Path.Combine(modDirectory, "better-night-sky/better-night-sky.unity3d");
 
             assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
             if (assetBundle == null)
@@ -63,16 +78,6 @@ namespace BetterNightSky
             updateMoon.UpdatePhase();
         }
 
-        public static void ForcePhase(int phase)
-        {
-            if (updateMoon == null)
-            {
-                return;
-            }
-
-            updateMoon.SetForcedPhase(phase);
-        }
-
         private static Texture2D[] GetMoonPhaseTextures()
         {
             Texture2D[] result = new Texture2D[24];
@@ -85,6 +90,17 @@ namespace BetterNightSky
             return result;
         }
 
+        private static void MoonPhase()
+        {
+            int numParameter = uConsole.GetNumParameters();
+            if (numParameter != 1)
+            {
+                Debug.LogError("Expected one parameter: Moon Phase Index");
+                return;
+            }
+
+            ForcePhase(uConsole.GetInt());
+        }
 
         private static void ToggleNightSky()
         {
@@ -100,18 +116,6 @@ namespace BetterNightSky
                 starSphere.SetActive(false);
                 moon.SetActive(false);
             }
-        }
-
-        private static void MoonPhase()
-        {
-            int numParameter = uConsole.GetNumParameters();
-            if (numParameter != 1)
-            {
-                Debug.LogError("Expected one parameter: Moon Phase Index");
-                return;
-            }
-
-            ForcePhase(uConsole.GetInt());
         }
     }
 }

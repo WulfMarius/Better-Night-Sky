@@ -8,12 +8,17 @@ namespace BetterNightSky
 
         public Texture2D[] MoonPhaseTextures;
 
-        private Material material;
         private Color baseColor;
-
+        private int forcedPhase = -1;
         private float lastAlpha;
         private int lastPhaseTextureIndex;
-        private int forcedPhase = -1;
+        private Material material;
+
+        public void SetForcedPhase(int forcedPhase)
+        {
+            this.forcedPhase = forcedPhase;
+            UpdatePhase();
+        }
 
         public void Start()
         {
@@ -39,10 +44,16 @@ namespace BetterNightSky
             material.mainTexture = MoonPhaseTextures[lastPhaseTextureIndex];
         }
 
-        public void SetForcedPhase(int forcedPhase)
+        private int GetPhaseTextureIndex()
         {
-            this.forcedPhase = forcedPhase;
-            UpdatePhase();
+            if (forcedPhase >= 0)
+            {
+                return forcedPhase;
+            }
+
+            UniStormWeatherSystem uniStormWeatherSystem = GameManager.GetUniStorm();
+            int day = uniStormWeatherSystem.GetDayNumber() + uniStormWeatherSystem.m_MoonCycleStartDay;
+            return day % MOON_CYCLE_DAYS * MoonPhaseTextures.Length / MOON_CYCLE_DAYS;
         }
 
         private void UpdateAlpha()
@@ -60,18 +71,6 @@ namespace BetterNightSky
         private void UpdateDirection()
         {
             transform.forward = -GameManager.GetUniStorm().m_MoonLight.transform.forward;
-        }
-
-        private int GetPhaseTextureIndex()
-        {
-            if (forcedPhase >= 0)
-            {
-                return forcedPhase;
-            }
-
-            UniStormWeatherSystem uniStormWeatherSystem = GameManager.GetUniStorm();
-            int day = uniStormWeatherSystem.GetDayNumber() + uniStormWeatherSystem.m_MoonCycleStartDay;
-            return day % MOON_CYCLE_DAYS * MoonPhaseTextures.Length / MOON_CYCLE_DAYS;
         }
     }
 }

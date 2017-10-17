@@ -14,12 +14,17 @@ namespace BetterNightSky
         }
     }
 
-    [HarmonyPatch(typeof(UniStormWeatherSystem), "SetMoonPhase")]
-    internal class UniStormWeatherSystemSetMoonPhasePatch
+    [HarmonyPatch(typeof(UniStormWeatherSystem), "Init")]
+    internal class UniStormWeatherSystemInitPatch
     {
-        public static void Postfix()
+        public static void OnLoad()
         {
-            Implementation.UpdateMoonPhase();
+            Implementation.Initialize();
+        }
+
+        public static void Prefix()
+        {
+            Implementation.Install();
         }
     }
 
@@ -32,17 +37,12 @@ namespace BetterNightSky
         }
     }
 
-    [HarmonyPatch(typeof(UniStormWeatherSystem), "Init")]
-    internal class UniStormWeatherSystemInitPatch
+    [HarmonyPatch(typeof(UniStormWeatherSystem), "SetMoonPhase")]
+    internal class UniStormWeatherSystemSetMoonPhasePatch
     {
-        public static void OnLoad()
+        public static void Postfix()
         {
-            Implementation.Initialize();
-        }
-
-        public static void Prefix()
-        {
-            Implementation.Install();
+            Implementation.UpdateMoonPhase();
         }
     }
 }

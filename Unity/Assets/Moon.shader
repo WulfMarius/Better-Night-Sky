@@ -60,7 +60,7 @@
 		Cull Off
 		Lighting Off
 		ZWrite On
-		ColorMask RGB
+		ColorMask RGBA
 		Blend SrcAlpha OneMinusSrcAlpha
         Pass {  
             CGPROGRAM
@@ -100,7 +100,7 @@
             fixed4 frag (v2f i) : COLOR
             {
                 fixed4 texColor = tex2D(_MainTex, i.texcoord);
-				clip(texColor - 0.1);
+				// clip(texColor - 0.1);
 				return texColor * _TintColor;
             }
             ENDCG
