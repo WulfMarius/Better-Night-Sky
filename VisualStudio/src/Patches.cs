@@ -17,11 +17,6 @@ namespace BetterNightSky
     [HarmonyPatch(typeof(UniStormWeatherSystem), "Init")]
     internal class UniStormWeatherSystemInitPatch
     {
-        public static void OnLoad()
-        {
-            Implementation.Initialize();
-        }
-
         public static void Prefix()
         {
             Implementation.Install();

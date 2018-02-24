@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-
 using UnityEngine;
 
 namespace BetterNightSky
@@ -16,10 +15,12 @@ namespace BetterNightSky
 
         public static void OnLoad()
         {
-            Debug.Log("[Better-Night-Sky]: Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            Debug.Log("[Better-Night-Sky]: Version " + Assembly.GetExecutingAssembly().GetName().Version);
+
+            Initialize();
         }
 
-        public static void ForcePhase(int phase)
+        internal static void ForcePhase(int phase)
         {
             if (updateMoon == null)
             {
@@ -29,30 +30,9 @@ namespace BetterNightSky
             updateMoon.SetForcedPhase(phase);
         }
 
-        public static void Initialize()
+        internal static void Install()
         {
-            string modDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string assetBundlePath = Path.Combine(modDirectory, "better-night-sky/better-night-sky.unity3d");
-
-            assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-            if (assetBundle == null)
-            {
-                throw new FileNotFoundException("Could not load asset bundle from path '" + assetBundlePath + "'.");
-            }
-
-            uConsole.RegisterCommand("toggle-night-sky", new uConsole.DebugCommand(ToggleNightSky));
-            uConsole.RegisterCommand("moon-phase", new uConsole.DebugCommand(MoonPhase));
-        }
-
-        public static void Install()
-        {
-            if (assetBundle == null)
-            {
-                return;
-            }
-
             UniStormWeatherSystem uniStorm = GameManager.GetUniStorm();
-
             originalStarSphere = uniStorm.m_StarSphere;
             originalStarSphere.SetActive(false);
 
@@ -68,7 +48,7 @@ namespace BetterNightSky
             updateMoon.MoonPhaseTextures = GetMoonPhaseTextures();
         }
 
-        public static void UpdateMoonPhase()
+        internal static void UpdateMoonPhase()
         {
             if (updateMoon == null)
             {
@@ -81,13 +61,27 @@ namespace BetterNightSky
         private static Texture2D[] GetMoonPhaseTextures()
         {
             Texture2D[] result = new Texture2D[24];
-
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = assetBundle.LoadAsset<Texture2D>("assets/MoonPhase/Moon_" + i + ".png");
             }
 
             return result;
+        }
+
+        private static void Initialize()
+        {
+            string modDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string assetBundlePath = Path.Combine(modDirectory, "better-night-sky/better-night-sky.unity3d");
+
+            assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            if (assetBundle == null)
+            {
+                throw new FileNotFoundException("Could not load asset bundle from path '" + assetBundlePath + "'.");
+            }
+
+            uConsole.RegisterCommand("toggle-night-sky", new uConsole.DebugCommand(ToggleNightSky));
+            uConsole.RegisterCommand("moon-phase", new uConsole.DebugCommand(MoonPhase));
         }
 
         private static void MoonPhase()
