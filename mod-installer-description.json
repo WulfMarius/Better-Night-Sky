@@ -5,7 +5,7 @@
 	"releases": [
 		{
 			"version": "2.0.0",
-			"url": "hhttps://github.com/WulfMarius/Better-Night-Sky/releases/tag/2.0.0-main",
+			"url": "https://github.com/WulfMarius/Better-Night-Sky/releases/tag/2.0.0-main",
 			"changes": "updated to work with TLD V1.27",
 			"dependencies": [],
 			"assets": [
