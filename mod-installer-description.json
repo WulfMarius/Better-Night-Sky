@@ -1,0 +1,18 @@
+﻿{
+	"name": "Better-Night-Sky",
+	"description": "Replaces the moon and stars with a more detailed representation. Has no effect on the weather or aurora.",
+	"url": "https://github.com/WulfMarius/Better-Night-Sky",
+	"releases": [
+		{
+			"version": "2.0.0",
+			"url": "hhttps://github.com/WulfMarius/Better-Night-Sky/releases/tag/2.0.0-main",
+			"changes": "updated to work with TLD V1.27",
+			"dependencies": [],
+			"assets": [
+				{
+					"url": "https://github.com/WulfMarius/Better-Night-Sky/releases/download/2.0.0-main/Better-Night-Sky-V2.0.0.zip"
+				}
+			]
+		}
+	]
+}
