@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1053512247599756}
+  m_RootGameObject: {fileID: 1970508119102338}
   m_IsPrefabParent: 1
---- !u!1 &1053512247599756
+--- !u!1 &1970508119102338
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4651672853396048}
-  - component: {fileID: 33219555714048330}
-  - component: {fileID: 23391633113913174}
+  - component: {fileID: 4576703557408336}
+  - component: {fileID: 33270828242972832}
+  - component: {fileID: 23539797669627152}
   m_Layer: 0
   m_Name: StarSphere
   m_TagString: Untagged
@@ -28,29 +28,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4651672853396048
+--- !u!4 &4576703557408336
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1053512247599756}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 1970508119102338}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 13500, y: 13500, z: 13500}
+  m_LocalScale: {x: 11000, y: 11000, z: 11000}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23391633113913174
+--- !u!23 &23539797669627152
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1053512247599756}
+  m_GameObject: {fileID: 1970508119102338}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -75,10 +75,10 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33219555714048330
+--- !u!33 &33270828242972832
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1053512247599756}
-  m_Mesh: {fileID: 4300000, guid: 7802d953d46c89147a12f7e511d250c8, type: 3}
+  m_GameObject: {fileID: 1970508119102338}
+  m_Mesh: {fileID: 4300000, guid: af1923998ac08a34bbf874bb66e2adea, type: 3}
