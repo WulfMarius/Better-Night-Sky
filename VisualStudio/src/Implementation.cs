@@ -15,7 +15,7 @@ namespace BetterNightSky
 
         public static void OnLoad()
         {
-            Debug.Log("[Better-Night-Sky]: Version " + Assembly.GetExecutingAssembly().GetName().Version);
+            Debug.Log("[Better-Night-Sky] Version " + Assembly.GetExecutingAssembly().GetName().Version);
 
             Initialize();
         }
