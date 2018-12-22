@@ -6,6 +6,8 @@ namespace BetterNightSky
 {
     internal class Implementation
     {
+        private const string NAME = "Better-Night-Sky";
+
         private static AssetBundle assetBundle;
 
         private static GameObject moon;
@@ -15,7 +17,8 @@ namespace BetterNightSky
 
         public static void OnLoad()
         {
-            Debug.Log("[Better-Night-Sky] Version " + Assembly.GetExecutingAssembly().GetName().Version);
+            AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+            Log("Version " + assemblyName.Version);
 
             Initialize();
         }
@@ -46,6 +49,17 @@ namespace BetterNightSky
             moon.layer = originalStarSphere.layer;
             updateMoon = moon.AddComponent<UpdateMoon>();
             updateMoon.MoonPhaseTextures = GetMoonPhaseTextures();
+        }
+
+        internal static void Log(string message)
+        {
+            Debug.LogFormat("[" + NAME + "] {0}", message);
+        }
+
+        internal static void Log(string message, params object[] parameters)
+        {
+            string preformattedMessage = string.Format("[" + NAME + "] {0}", message);
+            Debug.LogFormat(preformattedMessage, parameters);
         }
 
         internal static void UpdateMoonPhase()

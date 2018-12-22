@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Material_Moon
   m_Shader: {fileID: 4800000, guid: 24f2b212dd9e6ac4688e0f76e7351eea, type: 3}
@@ -99,7 +99,7 @@ Material:
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 0.75
+    - _Scale: 0.9
     - _Shininess: 0.7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
