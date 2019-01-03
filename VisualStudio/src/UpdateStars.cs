@@ -5,7 +5,7 @@ namespace BetterNightSky
     public class UpdateStars : MonoBehaviour
     {
         private Color baseColor;
-        private float lastAlpha;
+        private float lastAlpha = -1;
         private Material material;
 
         public void Start()

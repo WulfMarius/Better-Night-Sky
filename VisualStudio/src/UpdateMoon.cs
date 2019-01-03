@@ -10,8 +10,8 @@ namespace BetterNightSky
 
         private Color baseColor;
         private int forcedPhase = -1;
-        private float lastAlpha;
-        private int lastPhaseTextureIndex;
+        private float lastAlpha = -1;
+        private int lastPhaseTextureIndex = -1;
         private Material material;
 
         public void SetForcedPhase(int forcedPhase)
@@ -24,6 +24,7 @@ namespace BetterNightSky
         {
             material = GetComponentInChildren<Renderer>().material;
             baseColor = material.GetColor("_TintColor");
+            UpdatePhase();
         }
 
         public void Update()
@@ -34,6 +35,11 @@ namespace BetterNightSky
 
         public void UpdatePhase()
         {
+            if (MoonPhaseTextures == null || material == null)
+            {
+                return;
+            }
+
             int phaseTextureIndex = GetPhaseTextureIndex();
             if (lastPhaseTextureIndex == phaseTextureIndex)
             {

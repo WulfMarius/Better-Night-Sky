@@ -10,15 +10,27 @@ namespace BetterNightSky
 
         private static AssetBundle assetBundle;
 
+        private static Settings settings;
+
         private static GameObject moon;
-        private static GameObject originalStarSphere;
-        private static GameObject starSphere;
         private static UpdateMoon updateMoon;
+
+        private static GameObject starSphere;
+
+        private static GameObject shootingStar;
+        private static UpdateShootingStar updateShootingStar;
+
+        public static int ShootingStarsFrequency {
+            get => settings.ShootingStarsFrequency;
+        }
 
         public static void OnLoad()
         {
             AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
             Log("Version " + assemblyName.Version);
+
+            settings = Settings.Load();
+            settings.AddToModSettings(NAME, ModSettings.MenuType.MainMenuOnly);
 
             Initialize();
         }
@@ -35,20 +47,51 @@ namespace BetterNightSky
 
         internal static void Install()
         {
-            UniStormWeatherSystem uniStorm = GameManager.GetUniStorm();
-            originalStarSphere = uniStorm.m_StarSphere;
-            originalStarSphere.SetActive(false);
+            if (settings.Sky && starSphere == null)
+            {
+                starSphere = Object.Instantiate(assetBundle.LoadAsset<GameObject>("assets/StarSphere.prefab"));
+                starSphere.transform.parent = GameManager.GetUniStorm().m_StarSphere.transform.parent;
+                starSphere.transform.localEulerAngles = new Vector3(0,90,0);
+                starSphere.layer = GameManager.GetUniStorm().m_StarSphere.layer;
+                starSphere.AddComponent<UpdateStars>();
 
-            starSphere = Object.Instantiate(assetBundle.LoadAsset<GameObject>("assets/StarSphere.prefab"));
-            starSphere.transform.parent = originalStarSphere.transform.parent;
-            starSphere.layer = originalStarSphere.layer;
-            starSphere.AddComponent<UpdateStars>();
+                moon = Object.Instantiate(assetBundle.LoadAsset<GameObject>("assets/Moon.prefab"));
+                moon.transform.parent = GameManager.GetUniStorm().m_StarSphere.transform.parent.parent;
+                moon.layer = GameManager.GetUniStorm().m_StarSphere.layer;
+                updateMoon = moon.AddComponent<UpdateMoon>();
+                updateMoon.MoonPhaseTextures = GetMoonPhaseTextures();
 
-            moon = Object.Instantiate(assetBundle.LoadAsset<GameObject>("assets/Moon.prefab"));
-            moon.transform.parent = originalStarSphere.transform.parent.parent;
-            moon.layer = originalStarSphere.layer;
-            updateMoon = moon.AddComponent<UpdateMoon>();
-            updateMoon.MoonPhaseTextures = GetMoonPhaseTextures();
+                GameManager.GetUniStorm().m_StarSphere.SetActive(false);
+            }
+
+            if (!settings.Sky && starSphere != null)
+            {
+                Object.Destroy(starSphere);
+                Object.Destroy(moon);
+                GameManager.GetUniStorm().m_StarSphere.SetActive(true);
+            }
+
+            if (settings.ShootingStarsFrequency > 0 && shootingStar == null)
+            {
+                shootingStar = Object.Instantiate(assetBundle.LoadAsset<GameObject>("assets/ShootingStar.prefab"));
+                shootingStar.transform.parent = GameManager.GetUniStorm().m_StarSphere.transform.parent.parent;
+                updateShootingStar = shootingStar.AddComponent<UpdateShootingStar>();
+            }
+
+            if (settings.ShootingStarsFrequency == 0 && shootingStar != null)
+            {
+                Object.Destroy(shootingStar);
+            }
+        }
+
+        internal static void RescheduleShootingStars()
+        {
+            if (shootingStar == null)
+            {
+                return;
+            }
+
+            updateShootingStar.Reschedule();
         }
 
         internal static void Log(string message)
@@ -86,7 +129,7 @@ namespace BetterNightSky
         private static void Initialize()
         {
             string modDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string assetBundlePath = Path.Combine(modDirectory, "better-night-sky/better-night-sky.unity3d");
+            string assetBundlePath = Path.Combine(modDirectory, "Better-Night-Sky/Better-Night-Sky.unity3d");
 
             assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
             if (assetBundle == null)
@@ -96,6 +139,7 @@ namespace BetterNightSky
 
             uConsole.RegisterCommand("toggle-night-sky", new uConsole.DebugCommand(ToggleNightSky));
             uConsole.RegisterCommand("moon-phase", new uConsole.DebugCommand(MoonPhase));
+            uConsole.RegisterCommand("shooting-star", new uConsole.DebugCommand(ShootingStar));
         }
 
         private static void MoonPhase()
@@ -110,20 +154,30 @@ namespace BetterNightSky
             ForcePhase(uConsole.GetInt());
         }
 
+        private static void ShootingStar()
+        {
+            if (shootingStar == null)
+            {
+                Log("Shooting Stars are disabled");
+                return;
+            }
+
+            int duration = 5;
+            if (uConsole.GetNumParameters() == 1)
+            {
+                duration = uConsole.GetInt();
+            }
+
+            updateShootingStar.Trigger(duration);
+        }
+
         private static void ToggleNightSky()
         {
-            if (originalStarSphere.activeSelf)
-            {
-                originalStarSphere.SetActive(false);
-                starSphere.SetActive(true);
-                moon.SetActive(true);
-            }
-            else
-            {
-                originalStarSphere.SetActive(true);
-                starSphere.SetActive(false);
-                moon.SetActive(false);
-            }
+            GameObject originalStarSphere = GameManager.GetUniStorm().m_StarSphere;
+
+            starSphere.SetActive(originalStarSphere.activeSelf);
+            moon.SetActive(originalStarSphere.activeSelf);
+            originalStarSphere.SetActive(!originalStarSphere.activeSelf);
         }
     }
 }

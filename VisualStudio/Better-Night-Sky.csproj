@@ -34,14 +34,19 @@
     <Compile Include="src\Implementation.cs" />
     <Compile Include="src\Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Settings.cs" />
     <Compile Include="src\UpdateMoon.cs" />
+    <Compile Include="src\UpdateShootingStars.cs" />
     <Compile Include="src\UpdateStars.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony" />
     <Reference Include="Assembly-CSharp" />
+    <Reference Include="ModSettings" />
     <Reference Include="UnityEngine.AssetBundleModule" />
     <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="UnityEngine.JSONSerializeModule" />
+    <Reference Include="UnityEngine.ParticleSystemModule" />
     <Reference Include="UnityEngine.PhysicsModule" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
